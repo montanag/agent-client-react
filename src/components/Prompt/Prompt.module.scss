@@ -1,0 +1,16 @@
+.promptInput {
+    padding: 10px;
+    max-width: 720px;
+    width: 100%;
+    box-sizing: border-box;
+
+    // This should be in a global style
+    outline: none;
+    border: 1px solid rgb(120, 120, 120);
+    border-radius: 10px;
+    transition: border-color 0.2s ease;
+
+    &:hover {
+        border: 1px solid rgb(184, 184, 184);
+    }
+}
