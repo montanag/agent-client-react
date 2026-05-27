@@ -37,7 +37,7 @@ const startSession = async () => {
 
   try {
     await session.connect({
-      apiKey: "redacted",
+      apiKey: import.meta.env.VITE_OPENAI_EPHEMERAL_TOKEN, // TODO: Get this from an API
     });
   } catch (err) {
     console.error("Failed to connect:", err);
