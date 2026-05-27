@@ -5,64 +5,77 @@ import WelcomeText from './components/WelcomeText/WelcomeText'
 import type { Toolset } from './models/toolset'
 import { useEffect, useState } from 'react'
 import { getToolsets } from './api/toolsets'
-import { RealtimeAgent, RealtimeSession, tool } from '@openai/agents-realtime'
-import z from 'zod'
-
-
-const getWeather = tool({
-  name: "get_weather",
-  description: "Get the current weather for a city",
-  parameters: z.object({
-    city: z.string().describe("The city name"),
-  }),
-  execute: async ({ city }) => {
-    console.log(`Getting weather for ${city}...`);
-    // Your actual logic here — call an API, DB, etc.
-    return `The weather in ${city} is sunny and 72°F.`;
-  },
-});
-
-const startSession = async () => {
-  const agent = new RealtimeAgent({
-    name: "Assistant",
-    instructions: "You are a helpful voice assistant. You speak English.",
-    tools: [getWeather],
-  });
-  console.log("Created agent");
-
-  const session = new RealtimeSession(agent, {
-    model: "gpt-realtime",
-  });
-  console.log("Started session");
-
-  try {
-    await session.connect({
-      apiKey: import.meta.env.VITE_OPENAI_EPHEMERAL_TOKEN, // TODO: Get this from an API
-    });
-  } catch (err) {
-    console.error("Failed to connect:", err);
-    return;
-  }
-
-  console.log("Connected")
-}
+import { RealtimeAgent, RealtimeSession, tool as createOpenAiTool } from '@openai/agents-realtime'
+import type { Tool } from './models/tool'
+import { executeTool, getTools } from './api/tools'
 
 
 function App() {
   const [toolsets, setToolsets] = useState<Toolset[] | undefined>(undefined)
+  const [tools, setTools] = useState<Tool[] | undefined>(undefined)
 
   useEffect(() => {
     // Get the token for the voice chat
-  })
+  }, [])
 
   useEffect(() => {
-    // Get the available tools
     const fetchTools = async () => {
-      const toolsets = await getToolsets();
-      setToolsets(toolsets);
+      const tools: Tool[] = await getTools();
+      setTools(tools)
     }
     fetchTools();
   }, [])
+
+  useEffect(() => {
+    // Get the available tools
+    const fetchToolsets = async () => {
+      const toolsets = await getToolsets();
+      setToolsets(toolsets);
+    }
+    fetchToolsets();
+  }, [])
+
+  const startSession = async () => {
+    // Map the tools
+    console.log(tools)
+    if (!tools) {
+      console.error("No tools retrieved yet")
+      return;
+    }
+
+    const mappedTools = tools.map(tool => createOpenAiTool({
+      name: tool.name,
+      description: tool.description,
+      parameters: tool.inputSchema,
+      execute: async (input) => {
+        console.log("Executing tool with input", input)
+        return `The weather in Grand Rapids is sunny and 72°F.`;
+      }
+    }))
+
+    const agent = new RealtimeAgent({
+      name: "Assistant",
+      instructions: "You are a helpful voice assistant. You speak English.",
+      tools: mappedTools,
+    });
+    console.log("Created agent");
+
+    const session = new RealtimeSession(agent, {
+      model: "gpt-realtime",
+    });
+    console.log("Started session");
+
+    try {
+      await session.connect({
+        apiKey: import.meta.env.VITE_OPENAI_EPHEMERAL_TOKEN, // TODO: Get this from an API
+      });
+    } catch (err) {
+      console.error("Failed to connect:", err);
+      return;
+    }
+
+    console.log("Connected")
+  }
 
   return (
     <div className='flex column grow'>

@@ -1,5 +1,8 @@
-export interface Tool {
+import type { ZodObject, ZodRawShape } from "zod";
+
+export interface Tool<TSchema extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>> {
     uuid: string;
-    toolsetUuid: string;
     name: string;
-}
+    description: string;
+    inputSchema: TSchema;
+};
