@@ -8,6 +8,7 @@ import { getToolsets } from './api/toolsets'
 import { RealtimeAgent, RealtimeSession, tool as createOpenAiTool } from '@openai/agents-realtime'
 import type { Tool } from './models/tool'
 import { executeTool, getTools } from './api/tools'
+import { createVoiceSession } from './api/session'
 
 
 function App() {
@@ -66,9 +67,11 @@ function App() {
     });
     console.log("Started session");
 
+    const ephemeral_token = await createVoiceSession()
+
     try {
       await session.connect({
-        apiKey: import.meta.env.VITE_OPENAI_EPHEMERAL_TOKEN, // TODO: Get this from an API
+        apiKey: ephemeral_token.token,
       });
     } catch (err) {
       console.error("Failed to connect:", err);
