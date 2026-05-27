@@ -48,8 +48,9 @@ function App() {
       description: tool.description,
       parameters: tool.inputSchema,
       execute: async (input) => {
+        const toolResult = await executeTool(tool.uuid, input)
         console.log("Executing tool with input", input)
-        return `The weather in Grand Rapids is sunny and 72°F.`;
+        return toolResult;
       }
     }))
 

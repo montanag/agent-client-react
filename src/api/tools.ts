@@ -1,4 +1,4 @@
-import z, { ZodObject } from "zod"
+import z, { ZodObject, type ZodRawShape } from "zod"
 import type { Tool } from "../models/tool"
 
 // TODO: Move base URL to a config file or env var
@@ -34,16 +34,17 @@ export async function getTools(): Promise<Tool[]> {
     });
 }
 
-export async function executeTool() {
-    const res = await fetch(resourceUrl + "/execute", {
+export async function executeTool<TSchema extends ZodObject<ZodRawShape>>(
+    toolUuid: string,
+    input: z.infer<TSchema>
+): Promise<unknown> {
+    const result = await fetch(resourceUrl + "/execute", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            "toolUuid": "gmail-search-emails-tool",
-            "input": {
-                query: "my query"
-            }
+            toolUuid,
+            input: input
         })
     })
-    return res;
+    return result.json();
 }
