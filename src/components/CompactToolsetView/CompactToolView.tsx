@@ -1,11 +1,12 @@
-import { executeTool } from "../../api/tools"
+import { installToolset } from "../../api/providers"
 import type { Toolset } from "../../models/toolset"
 import styles from './CompactToolView.module.scss'
 
 function CompactToolsetView({ toolset }: { toolset: Toolset }) {
     const toolsetClicked = async () => {
         console.log(`Toolset clicked: ${toolset.name}`)
-        await executeTool()
+        const installResponse = await installToolset()
+        window.location.href = installResponse.authorizationUrl;
     }
 
     return (
