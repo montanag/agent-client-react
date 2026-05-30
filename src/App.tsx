@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import PublicLayout from './layouts/PublicLayout'
+import PublicLayout from './layouts/PublicLayout/PublicLayout'
 import SignIn from './pages/SignIn/SignIn'
 import ProtectedLayout from './layouts/ProtectedLayout/ProtectedLayout'
 import Home from './pages/Home/Home'
