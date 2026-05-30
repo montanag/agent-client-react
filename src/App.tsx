@@ -1,99 +1,27 @@
-import './App.scss'
-import Prompt from './components/Prompt/Prompt'
-import ToolsetExplorer from './components/ToolsetExplorer/ToolsetExplorer'
-import WelcomeText from './components/WelcomeText/WelcomeText'
-import type { Toolset } from './models/toolset'
-import { useEffect, useState } from 'react'
-import { getToolsets } from './api/toolsets'
-import { RealtimeAgent, RealtimeSession, tool as createOpenAiTool } from '@openai/agents-realtime'
-import type { Tool } from './models/tool'
-import { executeTool, getTools } from './api/tools'
-import { createVoiceSession } from './api/session'
-import { GoogleSignInButton } from './components/GoogleSignInButton/GoogleSignInButton'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import PublicLayout from './layouts/PublicLayout'
+import SignIn from './pages/SignIn/SignIn'
+import ProtectedLayout from './layouts/ProtectedLayout/ProtectedLayout'
+import Home from './pages/Home/Home'
 
 
 function App() {
-  const [toolsets, setToolsets] = useState<Toolset[] | undefined>(undefined)
-  const [tools, setTools] = useState<Tool[] | undefined>(undefined)
-
-  useEffect(() => {
-    // Get the token for the voice chat
-  }, [])
-
-  useEffect(() => {
-    const fetchTools = async () => {
-      const tools: Tool[] = await getTools();
-      setTools(tools)
-    }
-    fetchTools();
-  }, [])
-
-  useEffect(() => {
-    // Get the available tools
-    const fetchToolsets = async () => {
-      const toolsets = await getToolsets();
-      setToolsets(toolsets);
-    }
-    fetchToolsets();
-  }, [])
-
-  const startSession = async () => {
-    // Map the tools
-    console.log(tools)
-    if (!tools) {
-      console.error("No tools retrieved yet")
-      return;
-    }
-
-    const mappedTools = tools.map(tool => createOpenAiTool({
-      name: tool.name,
-      description: tool.description,
-      parameters: tool.inputSchema,
-      execute: async (input) => {
-        const toolResult = await executeTool(tool.uuid, input)
-        console.log("Executing tool with input", input)
-        return toolResult;
-      }
-    }))
-
-    const agent = new RealtimeAgent({
-      name: "Assistant",
-      instructions: "You are a helpful voice assistant. You speak English.",
-      tools: mappedTools,
-    });
-    console.log("Created agent");
-
-    const session = new RealtimeSession(agent, {
-      model: "gpt-realtime",
-    });
-    console.log("Started session");
-
-    const ephemeral_token = await createVoiceSession()
-
-    try {
-      await session.connect({
-        apiKey: ephemeral_token.token,
-      });
-    } catch (err) {
-      console.error("Failed to connect:", err);
-      return;
-    }
-
-    console.log("Connected")
-  }
+  const isAuthenticated = true // TODO: Replace with real auth detection
 
   return (
-    <div className='flex column grow'>
-      <div>sidebar</div>
-      <div className='content'>
-        {/* {toolsets ? JSON.stringify(toolsets) : 'Nope'} */}
-        <GoogleSignInButton onSuccess={(googleCredential) => { console.log(googleCredential) }}></GoogleSignInButton>
-        <WelcomeText></WelcomeText>
-        <Prompt></Prompt>
-        <ToolsetExplorer tools={toolsets}></ToolsetExplorer>
-        <button onClick={startSession}>Start session</button>
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* Unauthenticated layout - no sidebar */}
+        <Route element={<PublicLayout />}>
+          <Route path="/signin" element={<SignIn />} />
+        </Route>
+
+        {/* Authenticated layout - contains sidebar */}
+        <Route element={<ProtectedLayout isAuthenticated={isAuthenticated} />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
