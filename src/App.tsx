@@ -9,6 +9,7 @@ import { RealtimeAgent, RealtimeSession, tool as createOpenAiTool } from '@opena
 import type { Tool } from './models/tool'
 import { executeTool, getTools } from './api/tools'
 import { createVoiceSession } from './api/session'
+import { GoogleSignInButton } from './components/GoogleSignInButton/GoogleSignInButton'
 
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
       <div>sidebar</div>
       <div className='content'>
         {/* {toolsets ? JSON.stringify(toolsets) : 'Nope'} */}
+        <GoogleSignInButton onSuccess={(googleCredential) => { console.log(googleCredential) }}></GoogleSignInButton>
         <WelcomeText></WelcomeText>
         <Prompt></Prompt>
         <ToolsetExplorer tools={toolsets}></ToolsetExplorer>
