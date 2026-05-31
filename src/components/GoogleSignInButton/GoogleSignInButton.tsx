@@ -16,7 +16,7 @@ export function GoogleSignInButton({ onSuccess }: { onSuccess: (googleCredential
 
             window.google!.accounts.id.initialize({
                 client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-                callback: (response: { credential: string }) => onSuccessRef.current(response.credential),
+                callback: async (response: { credential: string }) => await onSuccessRef.current(response.credential),
             });
 
             window.google!.accounts.id.renderButton(divRef.current, { theme: "filled_blue", size: "large" });
