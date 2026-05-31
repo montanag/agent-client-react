@@ -2,6 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import styles from './ProtectedLayout.module.scss'
 import { useEffect, useState } from "react";
 import { verifyAuthentication } from "../../api/auth";
+import { UnauthorizedError } from "../../api/common";
 
 type AuthStatus = 'checking' | 'authenticated' | 'unauthenticated'
 
@@ -13,11 +14,14 @@ export default function ProtectedLayout() {
 
         const verifyAuth = async () => {
             try {
-                await verifyAuthentication()
+                await verifyAuthentication("throwOnly")
                 if (mounted) {
                     setAuthStatus('authenticated')
                 }
-            } catch {
+            } catch (error) {
+                if (!(error instanceof UnauthorizedError)) {
+                    throw error
+                }
                 if (mounted) {
                     setAuthStatus('unauthenticated')
                 }

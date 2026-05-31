@@ -8,7 +8,7 @@ const resourceUrl = baseUrl + "/api/tools"
 
 export async function getTools(): Promise<Tool[]> {
     // Fetch the tools
-    const baseTools = await apiFetch(z.array(ToolSchema), resourceUrl)
+    const baseTools = await apiFetch({ schema: z.array(ToolSchema), url: resourceUrl })
 
     // Map the tool json objects to strongly types tools
     return baseTools.map((tool: z.infer<typeof ToolSchema>): Tool => {

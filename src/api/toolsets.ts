@@ -7,5 +7,5 @@ const baseUrl = "http://localhost:3001"
 const resourceUrl = baseUrl + "/api/toolsets"
 
 export async function getToolsets() {
-    return await apiFetch(z.array(ToolsetSchema), resourceUrl)
+    return await apiFetch({ schema: z.array(ToolsetSchema), url: resourceUrl })
 }
