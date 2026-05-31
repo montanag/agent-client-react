@@ -5,7 +5,7 @@ declare global {
     interface Window { google?: any }
 }
 
-export function GoogleSignInButton({ onSuccess }: { onSuccess: (googleCredential: string) => void }) {
+export function GoogleSignInButton({ onSuccess }: { onSuccess: (googleCredential: string) => Promise<void> }) {
     const divRef = useRef<HTMLDivElement>(null);
     const onSuccessRef = useRef(onSuccess);
     onSuccessRef.current = onSuccess;

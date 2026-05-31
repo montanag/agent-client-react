@@ -6,8 +6,6 @@ import Home from './pages/Home/Home'
 
 
 function App() {
-  const isAuthenticated = true // TODO: Replace with real auth detection
-
   return (
     <BrowserRouter>
       <Routes>
@@ -17,7 +15,7 @@ function App() {
         </Route>
 
         {/* Authenticated layout - contains sidebar */}
-        <Route element={<ProtectedLayout isAuthenticated={isAuthenticated} />}>
+        <Route element={<ProtectedLayout />}>
           <Route path="/" element={<Home />} />
         </Route>
       </Routes>

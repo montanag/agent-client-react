@@ -12,3 +12,7 @@ export async function authenticateGoogle(credential: string): Promise<User> {
         body: JSON.stringify({ credential }),
     });
 }
+
+export async function verifyAuthentication(): Promise<User> {
+    return await apiFetch(UserSchema, resourceUrl + '/me');
+}

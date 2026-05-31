@@ -9,7 +9,6 @@ export default function SignIn() {
     }
 
     return <div className={styles.signIn}>
-        <div className={styles.box}></div>
         <GoogleSignInButton onSuccess={onSignIn}></GoogleSignInButton>
     </div>
 }
