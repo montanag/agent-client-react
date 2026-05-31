@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { GoogleSignInButton } from "../../components/GoogleSignInButton/GoogleSignInButton"
 import Prompt from "../../components/Prompt/Prompt"
 import ToolsetExplorer from "../../components/ToolsetExplorer/ToolsetExplorer"
 import WelcomeText from "../../components/WelcomeText/WelcomeText"
@@ -85,7 +84,6 @@ export default function Home() {
 
     return <div className={styles.home}>
         {/* {toolsets ? JSON.stringify(toolsets) : 'Nope'} */}
-        <GoogleSignInButton onSuccess={(googleCredential) => { console.log(googleCredential) }}></GoogleSignInButton>
         <WelcomeText></WelcomeText>
         <Prompt></Prompt>
         <ToolsetExplorer tools={toolsets}></ToolsetExplorer>
