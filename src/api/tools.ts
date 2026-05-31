@@ -1,5 +1,6 @@
 import z, { ZodObject, type ZodRawShape } from "zod"
-import type { Tool } from "../models/tool"
+import { ToolSchema, type Tool } from "../models/tool"
+import { apiFetch } from "./common"
 
 // TODO: Move base URL to a config file or env var
 const baseUrl = "http://localhost:3001"
@@ -7,11 +8,10 @@ const resourceUrl = baseUrl + "/api/tools"
 
 export async function getTools(): Promise<Tool[]> {
     // Fetch the tools
-    const result = await fetch(resourceUrl)
-    const raw = await result.json()
+    const baseTools = await apiFetch(z.array(ToolSchema), resourceUrl)
 
     // Map the tool json objects to strongly types tools
-    return raw.map((tool: any): Tool => {
+    return baseTools.map((tool: any): Tool => {
         // Get the input schema
         if (!tool.inputSchema) {
             throw new Error(
