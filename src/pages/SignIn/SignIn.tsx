@@ -4,9 +4,10 @@ import styles from './SignIn.module.scss'
 
 export default function SignIn() {
 
-    const onSignIn = (googleCredential: string) => {
+    const onSignIn = async (googleCredential: string) => {
         console.log(googleCredential)
-        const response = authenticateGoogle(googleCredential);
+        await authenticateGoogle(googleCredential);
+        window.location.href = '/'
     }
 
     return <div className={styles.signIn}>
