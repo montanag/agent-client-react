@@ -28,7 +28,7 @@ export default function ProtectedLayout() {
             }
         }
 
-        verifyAuth()
+        verifyAuth().catch(error => console.error(error)) // TODO: This error should be handled appropriately
 
         return () => {
             mounted = false
