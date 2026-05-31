@@ -11,7 +11,7 @@ export async function getTools(): Promise<Tool[]> {
     const baseTools = await apiFetch(z.array(ToolSchema), resourceUrl)
 
     // Map the tool json objects to strongly types tools
-    return baseTools.map((tool: any): Tool => {
+    return baseTools.map((tool: z.infer<typeof ToolSchema>): Tool => {
         // Get the input schema
         if (!tool.inputSchema) {
             throw new Error(

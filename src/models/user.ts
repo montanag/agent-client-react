@@ -9,5 +9,4 @@ export const UserSchema = z.object({
     updatedAt: z.iso.datetime().transform(val => new Date(val)),
 })
 
-// Derive the TypeScript type from the schema — no duplication
 export type User = z.infer<typeof UserSchema>

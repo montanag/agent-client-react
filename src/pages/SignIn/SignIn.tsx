@@ -3,9 +3,7 @@ import { GoogleSignInButton } from "../../components/GoogleSignInButton/GoogleSi
 import styles from './SignIn.module.scss'
 
 export default function SignIn() {
-
     const onSignIn = async (googleCredential: string) => {
-        console.log(googleCredential)
         await authenticateGoogle(googleCredential);
         window.location.href = '/'
     }
