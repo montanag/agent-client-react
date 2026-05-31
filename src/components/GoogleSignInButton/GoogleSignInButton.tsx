@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import styles from './GoogleSignInButton.module.scss'
 
 declare global {
     interface Window { google?: any }
@@ -18,7 +19,7 @@ export function GoogleSignInButton({ onSuccess }: { onSuccess: (googleCredential
                 callback: (response: { credential: string }) => onSuccessRef.current(response.credential),
             });
 
-            window.google!.accounts.id.renderButton(divRef.current, { theme: "outline", size: "large" });
+            window.google!.accounts.id.renderButton(divRef.current, { theme: "filled_blue", size: "large" });
         };
 
         if (window.google) {
@@ -32,5 +33,5 @@ export function GoogleSignInButton({ onSuccess }: { onSuccess: (googleCredential
         }
     }, []);
 
-    return <div ref={divRef} />;
+    return <div className={styles.wrapper} ref={divRef} />;
 }

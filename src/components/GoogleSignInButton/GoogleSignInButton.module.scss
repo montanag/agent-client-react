@@ -1,0 +1,10 @@
+.wrapper {
+    display: inline-flex;
+    background: transparent;
+
+    // Target the iframe GSI injects
+    iframe {
+        background: transparent !important;
+        color-scheme: normal;
+    }
+}
