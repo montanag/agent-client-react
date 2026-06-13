@@ -1,12 +1,12 @@
-import { UserSchema, type User } from "../models/user";
-import { apiFetch } from "./common";
+import { UserSchema, type User } from "../models/users.model";
+import { request } from "./common";
 
 // TODO: Move base URL to a config file or env var
 const baseUrl = "http://localhost:3001"
 const resourceUrl = baseUrl + "/api/auth"
 
 export async function authenticateGoogle(credential: string): Promise<User> {
-    return await apiFetch({
+    return await request({
         schema: UserSchema,
         url: resourceUrl + '/google',
         options: {
@@ -18,5 +18,5 @@ export async function authenticateGoogle(credential: string): Promise<User> {
 }
 
 export async function verifyAuthentication(unauthorizedBehavior: "redirectAndThrow" | "throwOnly" = "redirectAndThrow"): Promise<User> {
-    return await apiFetch({ schema: UserSchema, url: resourceUrl + '/me', unauthorizedBehavior });
+    return await request({ schema: UserSchema, url: resourceUrl + '/me', unauthorizedBehavior });
 }

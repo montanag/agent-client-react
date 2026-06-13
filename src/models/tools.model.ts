@@ -1,10 +1,11 @@
 import { z, ZodObject, type ZodRawShape } from 'zod'
+import { DbEntitySchema } from './common.model'
 
-export const ToolSchema = z.object({
-    uuid: z.string(),
+export const ToolSchema = DbEntitySchema.extend({
+    toolsetVersionUuid: z.string(),
     name: z.string(),
     description: z.string(),
-    inputSchema: z.record(z.string(), z.unknown())
+    inputSchema: z.record(z.string(), z.unknown()),
 })
 
 export type Tool<TSchema extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>> =

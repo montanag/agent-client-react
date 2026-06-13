@@ -1,5 +1,5 @@
 import { Fragment } from "react/jsx-runtime"
-import type { Toolset } from "../../models/toolset"
+import type { Toolset } from "../../models/toolsets.model"
 import CompactToolsetView from "../CompactToolsetView/CompactToolView"
 import styles from './ToolsetExplorer.module.scss'
 

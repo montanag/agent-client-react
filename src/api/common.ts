@@ -7,7 +7,7 @@ export class UnauthorizedError extends Error {
     }
 }
 
-export async function apiFetch<T>({
+export async function request<T>({
     schema,
     url,
     options,

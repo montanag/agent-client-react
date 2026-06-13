@@ -3,11 +3,10 @@ import Prompt from "../../components/Prompt/Prompt"
 import ToolsetExplorer from "../../components/ToolsetExplorer/ToolsetExplorer"
 import WelcomeText from "../../components/WelcomeText/WelcomeText"
 import { RealtimeAgent, RealtimeSession, tool as createOpenAiTool } from '@openai/agents-realtime'
-import type { Toolset } from "../../models/toolset"
-import type { Tool } from "../../models/tool"
-import { executeTool, getTools } from "../../api/tools"
+import type { Toolset } from "../../models/toolsets.model"
+import type { Tool } from "../../models/tools.model"
 import { createVoiceSession } from "../../api/session"
-import { getToolsets } from "../../api/toolsets"
+import { getToolsets } from "../../api/toolsets.api"
 import styles from './Home.module.scss'
 
 
@@ -19,13 +18,13 @@ export default function Home() {
         // Get the token for the voice chat
     }, [])
 
-    useEffect(() => {
-        const fetchTools = async () => {
-            const tools: Tool[] = await getTools();
-            setTools(tools)
-        }
-        fetchTools();
-    }, [])
+    // useEffect(() => {
+    //     const fetchTools = async () => {
+    //         const tools: Tool[] = await getTools();
+    //         setTools(tools)
+    //     }
+    //     fetchTools();
+    // }, [])
 
     useEffect(() => {
         // Get the available tools
@@ -50,9 +49,9 @@ export default function Home() {
             description: tool.description,
             parameters: tool.inputSchema,
             execute: async (input) => {
-                const toolResult = await executeTool(tool.uuid, input)
-                console.log("Executing tool with input", input)
-                return toolResult;
+                // const toolResult = await executeTool(tool.uuid, input)
+                // console.log("Executing tool with input", input)
+                // return toolResult;
             }
         }))
 
