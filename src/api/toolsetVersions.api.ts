@@ -1,6 +1,5 @@
 import z from "zod";
 import { request } from "./common";
-import { ToolSchema } from "../models/tools.model";
 import { ToolsetVersionSchema } from "../models/toolsetVersions.model";
 
 
@@ -11,6 +10,6 @@ export async function getToolsetVersions(toolsetUuid: string) {
     return await request({ schema: z.array(ToolsetVersionSchema), url: resourceUrl(toolsetUuid) })
 }
 
-export async function getToolByUuid(toolsetUuid: string, uuid: string) {
-    return await request({ schema: ToolSchema, url: `${resourceUrl(toolsetUuid)}/${uuid}` })
+export async function getToolsetVersionByUuid(toolsetUuid: string, uuid: string) {
+    return await request({ schema: ToolsetVersionSchema, url: `${resourceUrl(toolsetUuid)}/${uuid}` })
 }
