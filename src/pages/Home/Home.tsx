@@ -8,6 +8,8 @@ import type { Tool } from "../../models/tools.model"
 import { createVoiceSession } from "../../api/session"
 import { getToolsets } from "../../api/toolsets.api"
 import styles from './Home.module.scss'
+import { executeTool, getTools } from "../../api/sessions.api"
+import z, { ZodObject } from "zod"
 
 
 export default function Home() {
@@ -18,13 +20,13 @@ export default function Home() {
         // Get the token for the voice chat
     }, [])
 
-    // useEffect(() => {
-    //     const fetchTools = async () => {
-    //         const tools: Tool[] = await getTools();
-    //         setTools(tools)
-    //     }
-    //     fetchTools();
-    // }, [])
+    useEffect(() => {
+        const fetchTools = async () => {
+            const tools: Tool[] = await getTools();
+            setTools(tools);
+        }
+        fetchTools();
+    }, [])
 
     useEffect(() => {
         // Get the available tools
@@ -47,11 +49,10 @@ export default function Home() {
         const mappedTools = tools.map(tool => createOpenAiTool({
             name: tool.name,
             description: tool.description,
-            parameters: tool.inputSchema,
+            parameters: z.fromJSONSchema(tool.inputSchema) as ZodObject,
             execute: async (input) => {
-                // const toolResult = await executeTool(tool.uuid, input)
-                // console.log("Executing tool with input", input)
-                // return toolResult;
+                const toolResult = await executeTool(tool.uuid, input)
+                return toolResult;
             }
         }))
 

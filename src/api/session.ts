@@ -1,6 +1,6 @@
 // TODO: Move base URL to a config file or env var
 const baseUrl = "http://localhost:3001"
-const resourceUrl = baseUrl + "/api/session"
+const resourceUrl = baseUrl + "/api/sessions"
 
 export interface CreateVoiceSessionResponse {
     token: string
@@ -9,7 +9,8 @@ export interface CreateVoiceSessionResponse {
 export async function createVoiceSession(): Promise<CreateVoiceSessionResponse> {
     const result = await fetch(resourceUrl + "/voice", {
         method: "POST",
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include'
     })
     return (await result.json()) as CreateVoiceSessionResponse;
 }
