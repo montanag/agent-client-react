@@ -51,7 +51,7 @@ export default function Home() {
             description: tool.description,
             parameters: z.fromJSONSchema(tool.inputSchema) as ZodObject,
             execute: async (input) => {
-                const toolResult = await executeTool(tool.uuid, input)
+                const toolResult = await executeTool(tool.qualifiedSlug, input)
                 return toolResult;
             }
         }))

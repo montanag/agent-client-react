@@ -23,9 +23,9 @@ export async function getTools(): Promise<Tool[]> {
     return await request({ schema: ToolSchema.array(), url: `${resourceUrl}/1234/tools` });
 }
 
-export async function executeTool(toolUuid: string, input: any) {
+export async function executeTool(qualifiedToolName: string, input: any) {
     return await request({
-        schema: z.any(), url: `${resourceUrl}/1234/tools/${toolUuid}/execute`, options: {
+        schema: z.any(), url: `${resourceUrl}/1234/tools/${qualifiedToolName}/execute`, options: {
             method: "POST",
             body: JSON.stringify(input),
             headers: {
