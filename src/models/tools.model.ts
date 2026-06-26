@@ -4,6 +4,8 @@ import { DbEntitySchema } from './common.model'
 export const ToolSchema = DbEntitySchema.extend({
     toolsetVersionUuid: z.string(),
     name: z.string(),
+    slug: z.string(),
+    qualifiedSlug: z.string(),
     description: z.string(),
     inputSchema: z.record(z.string(), z.unknown()),
 })
